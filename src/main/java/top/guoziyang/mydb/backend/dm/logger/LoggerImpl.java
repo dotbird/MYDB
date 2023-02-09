@@ -90,9 +90,10 @@ public class LoggerImpl implements Logger {
         while(true) {
             byte[] log = internNext();
             if(log == null) break;
-            xCheck = calChecksum(xCheck, log);
+            //xCheck = calChecksum(xCheck, log); // 原语句
+            xCheck += calChecksum(xCheck, log);  // 修改的语句：这应该 += 吧，因为下面比较总校验和了
         }
-        if(xCheck != xChecksum) {
+        if(xCheck != xChecksum) {                // 这里比较
             Panic.panic(Error.BadLogFileException);
         }
 
